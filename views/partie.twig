@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/socket.io/socket.io.js">
+    </script>
+</head>
+<body> 
+    <center>
+    <label>Nom Partie:</label>
+    <input type="text" id="np">
+    <br>
+    <label>ID Joueur1:</label>
+    <input type="text" id="idj1">
+    <br>
+    <label>ID Joueur2:</label>
+    <input type="text" id="idj2">
+    <br>
+    <button onclick="add()">Envoyer</button>
+    <button onclick="aff()"> Afficher stat</button>
+    </center>
+</body>
+<script>
+     const socket=io.connect()
+    socket.on("partie",(data)=>{
+    p=document.createElement("p")
+    p.innerHTML=("<center>"+"Nom partie: "+data.nompartie+
+        "<br>"+"ID joueur1: "+data.joueur1+
+        "<br>"+"ID joueur2: "+data.joueur2+"<br>"+"</center>")// bech tekteb feha code html
+    document.body.append(p) //lezem tet7at bech y'afichiha
+
+    })
+    socket.on("aff",(data)=>{
+    p=document.createElement("p")
+    p.innerHTML=("<center>"+"ID joueur1: "+data.joueur1.pseudo+
+        "<br>"+"ID joueur2: "+data.joueur2.pseudo+"<br>"+"</center>")// bech tekteb feha code html
+    document.body.append(p) //lezem tet7at bech y'afichiha
+
+
+})
+
+
+     x1=document.getElementById("np")
+     x2=document.getElementById("idj1")
+     x3=document.getElementById("idj2")
+
+    function add(){
+        socket.emit("partie",{nompartie:x1.value,joueur1:x2.value,joueur2:x3.value})
+    }
+    function aff(){
+        socket.emit("aff",{joueur1:x2.value,joueur2:x3.value})
+
+    }
+</script>
+</html>
